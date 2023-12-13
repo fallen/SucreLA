@@ -1,4 +1,4 @@
-# SucreLA
+# SucréLA
 
 ## Building
 
