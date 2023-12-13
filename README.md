@@ -2,7 +2,9 @@
 
 ## Building
 
-The project dependencies are handled using Pipenv.
+The project Python's dependencies are handled using Pipenv.
+However, you must install [nextpnr-ecp5](https://github.com/YosysHQ/nextpnr) and [Yosys](https://github.com/YosysHQ/yosys) if you wish to build the
+projet from source.
 
 ```
 pipenv install --ignore-pipfile
