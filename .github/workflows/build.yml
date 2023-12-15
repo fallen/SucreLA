@@ -1,0 +1,29 @@
+name: CI
+run-name: Continuous Integration
+on: [push]
+jobs:
+  CI:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fetch nextpnr-ecp5 and Yosys
+        run: wget https://github.com/fallen/yosys_nextpnr_tools_for_ci/raw/main/tools.tar.gz
+      - name: Install nextpnr-ecp5 and Yosys
+        run: |
+          echo "PATH=/opt/bin:$PATH" >> "$GITHUB_ENV"
+          echo "LD_LIBRARY_PATH=/opt/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
+          sudo tar -C / -xzf $PWD/tools.tar.gz
+          sudo apt-get -y install libboost-system1.74.0 libboost-python1.74.0 libboost-filesystem1.74.0 libboost-program-options1.74.0 libboost-thread1.74.0 libreadline8 libtcl8.6 libffi8 libexpat1
+      - name: Install Python requirements
+        run: |
+          sudo apt-get -y install python3-pip
+          sudo -H pip3 install --upgrade pip
+          pip install pipenv
+          pipenv install --ignore-pipfile
+      - name: Build the FPGA bitstream
+        run: |
+          nextpnr-ecp5 --version
+          yosys --version
+          pipenv run python3 ./sucrela.py --build
