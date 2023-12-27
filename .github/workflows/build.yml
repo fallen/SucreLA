@@ -27,3 +27,8 @@ jobs:
           nextpnr-ecp5 --version
           yosys --version
           pipenv run python3 ./sucrela.py --build
+      - name: Build the software
+        run: |
+          cd software/libuartbone
+          make
+          ./uartbone_cli -h

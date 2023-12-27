@@ -79,6 +79,10 @@ int get_reg_addr(FILE *csv, char *reg_name, uint32_t *res) {
     return 0;
 }
 
+void print_usage(char *prog_name) {
+	printf("usage: %s uart_port [-V] [-b baudrate] [-r addr|reg_name] [-w addr|reg_name -v value] [-i] [-a addr_width]\n", prog_name);
+}
+
 int main(int argc, char **argv) {
     struct uartbone_ctx ctx;
     char ident_str[256];
@@ -95,13 +99,11 @@ int main(int argc, char **argv) {
     char *addr_string = NULL;
     uint32_t res, val;
     char *prog_name = argv[0];
-    char *uart_port = argv[1];
+    char *uart_port = NULL;
     char *csv_file = NULL;
     FILE *csv;
 
-    optind = 2;
-
-    while ((opt = getopt(argc, argv, ":w:r:b:a:v:c:Vi")) != -1) {
+    while ((opt = getopt(argc, argv, ":w:r:b:a:v:c:u:Vih")) != -1) {
         switch (opt) {
             case 'r':
                 char *endptr;
@@ -124,15 +126,18 @@ int main(int argc, char **argv) {
             case 'b':
                 baudrate = strtol(optarg, &endptr, 0);
                 if (errno != 0 || endptr == optarg)
-                    goto print_usage;
+                    goto err_print_usage;
                 break;
             case 'a':
                 addr_width = strtol(optarg, &endptr, 0);
                 if (errno != 0 || endptr == optarg)
-                    goto print_usage;
+                    goto err_print_usage;
                 break;
             case 'c':
                 csv_file = optarg;
+                break;
+            case 'u':
+                uart_port = optarg;
                 break;
             case 'V':
                 verbose = true;
@@ -140,14 +145,24 @@ int main(int argc, char **argv) {
             case 'v':
                 val = strtol(optarg, &endptr, 0);
                 if (errno != 0 || endptr == optarg)
-                    goto print_usage;
+                    goto err_print_usage;
+                break;
+            case 'h':
+		print_usage(prog_name);
+		return 0;
                 break;
             case '?':
             default:
-            print_usage:
-                printf("usage: %s uart_port [-V] [-b baudrate] [-r addr|reg_name] [-w addr|reg_name -v value] [-i] [-a addr_width]\n", prog_name);
+            err_print_usage:
+		print_usage(prog_name);
                 return -1;
         }
+    }
+
+    if (!uart_port) {
+        printf("You must specify an uart port using -u uart_port\n");
+        print_usage(prog_name);
+        return -1;
     }
 
     uartbone_unix_init(&ctx, uart_port, baudrate, addr_width);
