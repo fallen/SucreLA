@@ -80,7 +80,7 @@ int get_reg_addr(FILE *csv, char *reg_name, uint32_t *res) {
 }
 
 void print_usage(char *prog_name) {
-	printf("usage: %s uart_port [-V] [-b baudrate] [-r addr|reg_name] [-w addr|reg_name -v value] [-i] [-a addr_width]\n", prog_name);
+	printf("usage: %s [-u uart_port] [-V] [-b baudrate] [-r addr|reg_name] [-w addr|reg_name -v value] [-i] [-a addr_width]\n", prog_name);
 }
 
 int main(int argc, char **argv) {
