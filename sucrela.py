@@ -14,10 +14,10 @@ feather_gpio = [
 
 feather_hspi = [
     ("hspi", 0,
-     Subsignal("tx_clk", Pins("GPIO:9"), IOStandard("LVCMOS33")),
-     Subsignal("tx_req", Pins("GPIO:10"), IOStandard("LVCMOS33")),
-     Subsignal("tx_ready", Pins("GPIO:11"), IOStandard("LVCMOS33")),
-     Subsignal("tx_valid", Pins("GPIO:12"), IOStandard("LVCMOS33")),
+     Subsignal("clk", Pins("GPIO:9"), IOStandard("LVCMOS33")),
+     Subsignal("req", Pins("GPIO:10"), IOStandard("LVCMOS33")),
+     Subsignal("ready", Pins("GPIO:11"), IOStandard("LVCMOS33")),
+     Subsignal("valid", Pins("GPIO:12"), IOStandard("LVCMOS33")),
      Subsignal("hd", Pins("GPIO:13 GPIO:14 GPIO:15 GPIO:16 GPIO:18 GPIO:19 GPIO:20 GPIO:21"),
                IOStandard("LVCMOS33")),
     )
@@ -43,7 +43,7 @@ def main():
     parser = LiteXArgumentParser(platform=Platform, description="SucreLA on OrangeCrab.")
     parser.add_target_argument("--sys-clk-freq",    default=48e6, type=float, help="System clock frequency.")
     parser.add_target_argument("--revision",        default="0.2",            help="Board Revision (0.1 or 0.2).")
-    parser.add_target_argument("--device",          default="25F",            help="ECP5 device (25F, 45F or 85F).")
+    parser.add_target_argument("--device",          default="85F",            help="ECP5 device (25F, 45F or 85F).")
     parser.add_target_argument("--sdram-device",    default="MT41K64M16",     help="SDRAM device (MT41K64M16, MT41K128M16, MT41K256M16 or MT41K512M16).")
     parser.add_target_argument("--sim",             action="store_true", help="run LA simulation testsuite")
     parser.set_defaults(no_uart=True, cpu_type="None")

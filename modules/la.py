@@ -47,10 +47,10 @@ class LATest(Module):
     def __init__(self):
         hd_layout = [("oe", 1), ("o", 8), ("i", 8)]
         self.pads = Record([("hd", hd_layout),
-                            ("tx_clk", 1),
-                            ("tx_ready", 1),
-                            ("tx_valid", 1),
-                            ("tx_req", 1),
+                            ("clk", 1),
+                            ("ready", 1),
+                            ("valid", 1),
+                            ("req", 1),
                             ])
         self.ios = Signal(4)
         self.submodules.la = LA(self.ios, self.pads, depth=64, clock_domain="sys", samplerate=48e6)
@@ -61,7 +61,7 @@ class LATest(Module):
 
         def wait_for_tx_req():
             while True:
-                tx_req = yield self.pads.tx_req
+                tx_req = yield self.pads.req
                 if tx_req:
                     print("Detected TX_REQ")
                     break
@@ -83,10 +83,10 @@ class LATest(Module):
             yield
             yield from wait_for_tx_req()
 
-            yield self.pads.tx_ready.eq(1)
+            yield self.pads.ready.eq(1)
             for i in range(100):
                 yield self.ios.eq(self.ios + 1)
-                tx_valid = yield self.pads.tx_valid
+                tx_valid = yield self.pads.valid
                 if tx_valid == 1:
                     print("Detected TX_VALID")
                     break
@@ -96,7 +96,7 @@ class LATest(Module):
             for i in range(4096):
                 if i == 40:
                     yield self.la.storage.enable.storage.eq(0)
-                tx_valid = yield self.pads.tx_valid
+                tx_valid = yield self.pads.valid
                 if tx_valid == 0:
                     print("TX_VALID is gone (i={})!".format(i))
                     print("total buffer: {}".format(data_buffer))

@@ -64,7 +64,7 @@ class HSPITransmitter(Module):
         word_index = Signal(max=4095)
 
         self.comb += [
-            pads.tx_clk.eq(ClockSignal("sys")),
+            pads.clk.eq(ClockSignal("sys")),
             header.eq(Cat(user_id_in, sequence_nr_in, tll_2b_in))
         ]
 
@@ -80,7 +80,7 @@ class HSPITransmitter(Module):
         fsm.act("WAIT_INPUT",
             self.state.eq(0),
             If(sink.valid,
-               pads.tx_req.eq(1),
+               pads.req.eq(1),
                NextValue(header_reg, header),
                NextState("WAIT_TX_READY")
             )
@@ -88,8 +88,8 @@ class HSPITransmitter(Module):
 
         fsm.act("WAIT_TX_READY",
             self.state.eq(1),
-            pads.tx_req.eq(1),
-            If(pads.tx_ready,
+            pads.req.eq(1),
+            If(pads.ready,
                NextState("TX_HEADER")
             )
         )
@@ -99,7 +99,7 @@ class HSPITransmitter(Module):
                 self.header_timer.wait.eq(1),
                 hd.oe.eq(1),
                 hd.o.eq(header_reg[:hd_width]),
-                pads.tx_valid.eq(1),
+                pads.valid.eq(1),
                 crc.data_in.eq(header_reg[:hd_width]),
                 crc.enable_in.eq(1),
                 NextValue(header_reg, header_reg >> hd_width),
@@ -113,7 +113,7 @@ class HSPITransmitter(Module):
                 self.sink.ready.eq(1),
                 crc.data_in.eq(sink.data),
                 crc.enable_in.eq(1),
-                pads.tx_valid.eq(1),
+                pads.valid.eq(1),
                 hd.o.eq(sink.data),
                 hd.oe.eq(1),
                 If(sink.valid,
@@ -127,7 +127,7 @@ class HSPITransmitter(Module):
         fsm.act("TX_CRC",
                 self.state.eq(4),
                 self.crc_timer.wait.eq(1),
-                pads.tx_valid.eq(1),
+                pads.valid.eq(1),
                 crc.reset_in.eq(1),
                 hd.o.eq(crc.crc_out),
                 #  hd.o.eq(0xCC),  # FIXME: need to output CRC, but how to output CRC16 when in 8 bit mode?,
@@ -139,10 +139,10 @@ class HSPITransmitter(Module):
 
         fsm.act("WAIT_TX_READY_OVER",
                 self.state.eq(5),
-                pads.tx_valid.eq(0),
-                pads.tx_req.eq(0),
+                pads.valid.eq(0),
+                pads.req.eq(0),
                 hd.oe.eq(0),
-                If(~pads.tx_ready,
+                If(~pads.ready,
                     NextState("WAIT_INPUT")
                 )
         )
