@@ -7,7 +7,9 @@ name = "pypi"
 litex = {git = "git+https://github.com/enjoy-digital/litex"}
 litedram = {git = "git+https://github.com/enjoy-digital/litedram"}
 litex-boards = {git = "git+https://github.com/litex-hub/litex-boards"}
+litescope = {git = "git+https://github.com/enjoy-digital/litescope"}
 crc = "*"
+dearpygui = "*"
 
 [dev-packages]
 

@@ -105,7 +105,7 @@ class LATest(Module):
                 handle_data(data, data_buffer)
                 yield self.ios.eq(self.ios + 1)
                 yield
-                print("Transmitted {}".format(data))
+                print("Transmitted 0x{:02x}".format(data))
 
             p = HSPIPacket(data_buffer)
 

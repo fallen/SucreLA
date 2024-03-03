@@ -1,6 +1,8 @@
 from migen import *
+from migen.genlib.cdc import MultiReg
 from litex.soc.interconnect import stream
 from litex.gen.genlib.misc import WaitTimer
+from litex.soc.interconnect.csr import *
 
 from modules.misc import core_layout
 
@@ -54,7 +56,8 @@ class HSPITransmitter(Module):
         assert hd_width % data_in_width == 0
         assert hd_width >= data_in_width  # TODO: allow more diverse configurations
         crc_size = 32 if hd_width == 32 else 16
-        self.submodules.crc = crc = CRC(polynomial=0x8005, crc_size=crc_size, datawidth=data_in_width, delay=False)
+
+        self.submodules.crc = crc = CRC(polynomial=0x8005, crc_size=crc_size, datawidth=hd_width, delay=False)
 
         header =            Signal(32)
         header_reg =        Signal(32)
@@ -62,6 +65,7 @@ class HSPITransmitter(Module):
         sequence_nr_in =    Signal(4)
         user_id_in =        Signal(26, reset=0xA5B6C7D8)
         word_index = Signal(max=4095)
+        self.crc_r = Signal(crc_size)
 
         self.comb += [
             pads.clk.eq(ClockSignal("sys")),
@@ -120,7 +124,8 @@ class HSPITransmitter(Module):
                     NextValue(word_index, word_index + 1)
                 ),
                 If(sink.last | (word_index == 4095) | ~sink.valid,
-                    NextState("TX_CRC")
+                    NextState("TX_CRC"),
+                    NextValue(self.crc_r, crc.crc_out),
                 )
         )
 
@@ -128,9 +133,8 @@ class HSPITransmitter(Module):
                 self.state.eq(4),
                 self.crc_timer.wait.eq(1),
                 pads.valid.eq(1),
-                crc.reset_in.eq(1),
-                hd.o.eq(crc.crc_out),
-                #  hd.o.eq(0xCC),  # FIXME: need to output CRC, but how to output CRC16 when in 8 bit mode?,
+                hd.o.eq(self.crc_r[:hd_width]),
+                NextValue(self.crc_r, self.crc_r >> hd_width),
                 hd.oe.eq(1),
                 If(self.crc_timer.done,
                     NextState("WAIT_TX_READY_OVER")
@@ -182,7 +186,7 @@ class HSPIPacket:
                 init_value=0xffff,
                 final_xor_value=0xffff,
                 reverse_input=True,
-                reverse_output=False,
+                reverse_output=True,
             )
         else:
             config = Configuration(
@@ -194,7 +198,7 @@ class HSPIPacket:
                 reverse_output=True,
             )
         calculator = Calculator(config)
-        correct = calculator.verify(self.data[:-self.crc_len], int.from_bytes(self.crc, "big"))
+        correct = calculator.verify(self.data[:-self.crc_len], int.from_bytes(self.crc, "little"))
         real_crc = calculator.checksum(self.data[:-self.crc_len])
         if correct:
             print("VALID CRC {} !".format(self.crc))
