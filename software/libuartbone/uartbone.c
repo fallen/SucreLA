@@ -11,6 +11,12 @@
 #  define be16toh(x) betoh16(x)
 #  define be32toh(x) betoh32(x)
 #  define be64toh(x) betoh64(x)
+#elif defined(__riscv) // workaround for xpack newlib nano based toolchain
+	#include <machine/endian.h>
+	#define htobe16(_x) __htons(_x)
+	#define htobe32(_x) __htonl(_x)
+	#define htobe64(_x) ({ printf("unsupported 64 bit endianness conversion\n"); abort(); 0; })
+	#define be32toh(_x) __ntohl(_x)
 #endif
 
 #include "uartbone.h"
