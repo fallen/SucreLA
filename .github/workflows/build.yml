@@ -32,3 +32,6 @@ jobs:
           cd software/libuartbone
           make
           ./uartbone_cli -h
+      - name: Run Simulation tests
+        run: |
+          pipenv run python3 ./sucrela.py --sim
