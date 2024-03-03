@@ -6,6 +6,7 @@ from litex.soc.interconnect.csr import *
 
 from modules.misc import core_layout
 
+import sys
 
 class CRC(Module):
     def __init__(self, polynomial, crc_size, datawidth, init=None, delay=False):
@@ -204,3 +205,4 @@ class HSPIPacket:
             print("VALID CRC {} !".format(self.crc))
         else:
             print("@@ INVALID CRC @@ {} instead of {}".format(self.crc, hex(real_crc)))
+            sys.exit(1)
