@@ -12,6 +12,7 @@
 #  define be32toh(x) betoh32(x)
 #  define be64toh(x) betoh64(x)
 #elif defined(__riscv) // workaround for xpack newlib nano based toolchain
+	#include <stdlib.h>
 	#include <machine/endian.h>
 	#define htobe16(_x) __htons(_x)
 	#define htobe32(_x) __htonl(_x)
