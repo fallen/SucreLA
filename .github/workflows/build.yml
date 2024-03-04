@@ -8,6 +8,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Fetch nextpnr-ecp5 and Yosys
         run: wget https://github.com/fallen/yosys_nextpnr_tools_for_ci/raw/main/tools.tar.gz
       - name: Install nextpnr-ecp5 and Yosys
@@ -35,3 +37,12 @@ jobs:
       - name: Run Simulation tests
         run: |
           pipenv run python3 ./sucrela.py --sim
+      - name: Fetch xpack RISC-V toolchain
+        run: wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+      - name: Unpack xpack RISC-V toolchain
+        run: |
+          sudo mkdir -p /opt
+          sudo tar -C /opt -xzf $PWD/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+      - name: Build SucreLA HydraUSB3 RISC-V firmware
+        run: PATH=/opt/xpack-riscv-none-elf-gcc-13.2.0-2/bin:$PATH make -C software/boards/hydrausb3/
+
