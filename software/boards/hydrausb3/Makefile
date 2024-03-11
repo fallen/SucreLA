@@ -46,6 +46,7 @@ OBJS += $(BUILD_DIR)/startup_CH56x.o
 DEPS  = $(subst .o,.d,$(OBJS))
 LIBS  =
 
+SOC_GENERATED_HEADERS = ../../../build/gsd_orangecrab/software/include
 UARTBONE_DIR  = ../../libuartbone
 UARTBONE_SRCS = $(UARTBONE_DIR)/uartbone.c
 OBJS         += $(patsubst $(UARTBONE_DIR)/%.c,$(BUILD_DIR)/%.o,$(UARTBONE_SRCS))
@@ -60,6 +61,7 @@ INCLUDES = \
   -I"$(DRV_DIR)" \
   -I"$(BOARD_DIR)" \
   -I"$(USER_DIR)" \
+  -I"$(BUILD_DIR)" \
   -I"$(UARTBONE_DIR)"
 
 # Add inputs and outputs from these tool invocations to the build variables
@@ -89,7 +91,10 @@ $(BUILD_DIR)/startup_CH56x.o: $(BSP_DIR)/startup/startup_CH56x.S | $$(@D)/.
 	$(COMPILER_PREFIX)-gcc $(C_OPTS) -x assembler -c -o "$@" "$<"
 	@echo ' '
 
-$(BUILD_DIR)/%.o: $(USER_DIR)/%.c | $$(@D)/.
+$(BUILD_DIR)/csr.h: $(SOC_GENERATED_HEADERS)/generated/csr.h
+	grep 'define CSR_' $< > $@
+
+$(BUILD_DIR)/%.o: $(USER_DIR)/%.c $(BUILD_DIR)/csr.h | $$(@D)/.
 	@echo $(OBJS)
 	@echo 'Building file: $<'
 	$(COMPILER_PREFIX)-gcc $(C_OPTS) -c -o "$@" "$<"
