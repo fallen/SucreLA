@@ -8,19 +8,19 @@ static void ch56x_uart_writeb(struct uartbone_ctx *ctx, uint8_t data) {
 	//printf("sending byte 0x%02x to uart %d\n\r", data, ctx->fd);
 	switch (ctx->fd) {
 		case 0: {
-			UART0_SendByte(data);
+			UART0_SendString(&data, 1);
 			break;
 		}
 		case 1: {
-			UART1_SendByte(data);
+			UART1_SendString(&data, 1);
 			break;
 		}
 		case 2: {
-			UART2_SendByte(data);
+			UART2_SendString(&data, 1);
 			break;
 		}
 		case 3: {
-			UART3_SendByte(data);
+			UART3_SendString(&data, 1);
 			break;
 		}
 		default: {
