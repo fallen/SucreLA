@@ -53,7 +53,11 @@ def main():
         LATest()
         exit(0)
 
-    soc = LASoC(sys_clk_freq=args.sys_clk_freq, **parser.soc_argdict)
+    soc = LASoC(sys_clk_freq=args.sys_clk_freq,
+                revision=args.revision,
+                device=args.device,
+                sdram_device=args.sdram_device,
+                **parser.soc_argdict)
 
     builder = Builder(soc, **parser.builder_argdict)
     if args.build:
