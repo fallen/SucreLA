@@ -8,18 +8,18 @@ from litex.soc.integration.builder import *
 from modules.la import LA, LATest
 
 feather_gpio = [
-    ("gpios", 0, Pins("GPIO:2 GPIO:3 GPIO:5 GPIO:6"), IOStandard("LVCMOS33")
+    ("gpios", 0, Pins("GPIO:2 GPIO:3 GPIO:5 GPIO:6"), IOStandard("LVCMOS33")  # C10 C9 B10 B9 aka SDA SCL 5 6
     )
 ]
 
 feather_hspi = [
     ("hspi", 0,
-     Subsignal("clk", Pins("GPIO:9"), IOStandard("LVCMOS33")),
-     Subsignal("req", Pins("GPIO:10"), IOStandard("LVCMOS33")),
-     Subsignal("ready", Pins("GPIO:11"), IOStandard("LVCMOS33")),
-     Subsignal("valid", Pins("GPIO:12"), IOStandard("LVCMOS33")),
+     Subsignal("clk", Pins("GPIO:9"), IOStandard("LVCMOS33")),  # C8 aka 9
+     Subsignal("req", Pins("GPIO:10"), IOStandard("LVCMOS33")),  # B8 aka 10
+     Subsignal("ready", Pins("GPIO:11"), IOStandard("LVCMOS33")),  # A8 aka 11
+     Subsignal("valid", Pins("GPIO:12"), IOStandard("LVCMOS33")),  # H2 aka 12
      Subsignal("hd", Pins("GPIO:13 GPIO:14 GPIO:15 GPIO:16 GPIO:18 GPIO:19 GPIO:20 GPIO:21"),
-               IOStandard("LVCMOS33")),
+               IOStandard("LVCMOS33")),  # J2 N15 R17 N16 L4 N3 N4 H4 aka 13 MISO SCK MOSI A0 A1 A2 A3
     )
 ]
 
