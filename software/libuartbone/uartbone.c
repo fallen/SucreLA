@@ -39,21 +39,11 @@ union wb_val_64 {
 };
 
 void uart_send(struct uartbone_ctx *ctx, uint8_t *buffer, size_t length) {
-    size_t i;
-
-    for (i = 0; i < length; i++, buffer++)
-        ctx->uart->writeb(ctx, *buffer);
+    ctx->uart->write(ctx, buffer, length);
 }
 
 void uart_recv(struct uartbone_ctx *ctx, uint8_t *buffer, size_t length) {
-    size_t i;
-    int ret;
-
-    for (i = 0; i < length; i++, buffer++) {
-        ret = ctx->uart->readb(ctx, buffer);
-        if (ret < 0)
-            break;
-    }
+    ctx->uart->read(ctx, buffer, length);
 }
 
 void uartbone_flush(struct uartbone_ctx *ctx) {

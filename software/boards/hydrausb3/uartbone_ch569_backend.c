@@ -4,23 +4,23 @@
 #include "uartbone.h"
 #include "CH56x_uart.h"
 
-static void ch56x_uart_writeb(struct uartbone_ctx *ctx, uint8_t data) {
+static void ch56x_uart_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
 	//printf("sending byte 0x%02x to uart %d\n\r", data, ctx->fd);
 	switch (ctx->fd) {
 		case 0: {
-			UART0_SendString(&data, 1);
+			UART0_SendString(data, len);
 			break;
 		}
 		case 1: {
-			UART1_SendString(&data, 1);
+			UART1_SendString(data, len);
 			break;
 		}
 		case 2: {
-			UART2_SendString(&data, 1);
+			UART2_SendString(data, len);
 			break;
 		}
 		case 3: {
-			UART3_SendString(&data, 1);
+			UART3_SendString(data, len);
 			break;
 		}
 		default: {
@@ -30,26 +30,22 @@ static void ch56x_uart_writeb(struct uartbone_ctx *ctx, uint8_t data) {
 	}
 }
 
-static int ch56x_uart_readb(struct uartbone_ctx *ctx, uint8_t *data) {
+static int ch56x_uart_read(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
 	switch (ctx->fd) {
 		case 0: {
-			while (!(R8_UART0_LSR & RB_LSR_DATA_RDY)); // wait for FIFO not empty
-			*data = UART0_RecvByte();
+			UART0_Recv(data, len);
 			break;
 		}
 		case 1: {
-			while (!(R8_UART1_LSR & RB_LSR_DATA_RDY)); // wait for FIFO not empty
-			*data = UART1_RecvByte();
+			UART1_Recv(data, len);
 			break;
 		}
 		case 2: {
-			while (!(R8_UART2_LSR & RB_LSR_DATA_RDY)); // wait for FIFO not empty
-			*data = UART2_RecvByte();
+			UART2_Recv(data, len);
 			break;
 		}
 		case 3: {
-			while (!(R8_UART3_LSR & RB_LSR_DATA_RDY)); // wait for FIFO not empty
-			*data = UART3_RecvByte();
+			UART3_Recv(data, len);
 			break;
 		}
 		default: {
@@ -57,13 +53,14 @@ static int ch56x_uart_readb(struct uartbone_ctx *ctx, uint8_t *data) {
 			abort();
 		}
 	}
+	//printf("receiving byte 0x%02x from uart %d\n\r", *data, ctx->fd);
 	return 0;
 }
 
 struct uart_backend ch56x_uart_backend = {
 	.type = CH569_UART,
-	.readb = ch56x_uart_readb,
-	.writeb = ch56x_uart_writeb
+	.read = ch56x_uart_read,
+	.write = ch56x_uart_write
 };
 
 void uartbone_ch56x_init(struct uartbone_ctx *ctx, int uart_num, int baudrate, int addr_width) {

@@ -51,13 +51,70 @@ static speed_t baudrate_to_speed(unsigned int baudrate) {
     }
 }
 
+void uart_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
+    ssize_t ret;
+    size_t cur_pos = 0;
+
+    while (cur_pos != len) {
+        ret = write(ctx->fd, data + cur_pos, len - cur_pos);
+        if (ret == -1) {
+            perror("write");
+            return;
+        }
+        cur_pos += ret;
+    }
+}
+
+int uart_read(struct uartbone_ctx *ctx, uint8_t *res, size_t len) {
+    ssize_t ret;
+    size_t cur_pos = 0;
+
+    while (cur_pos != len) {
+        ret = read(ctx->fd, res + cur_pos, len - cur_pos);
+        if (ret <= 0) {
+            perror("read");
+            return;
+        }
+        cur_pos += ret;
+    }
+    return ret;
+}
+
+void usb_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
+}
+
+int usb_read(struct uartbone_ctx *ctx, uint8_t *res, size_t len) {
+    return 0;
+}
+
+struct uart_backend serial_backend = {
+    .type = UNIX_UART,
+    .read = uart_read,
+    .write = uart_write
+};
+
+struct uart_backend usb_backend = {
+    .type = UNIX_USB,
+    .read = usb_read,
+    .write = usb_write
+};
+
 void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudrate, unsigned int addr_width) {
     struct termios tty;
     int fd;
+    bool use_usb = false;
 
     ctx->error = 0;
     ctx->open = false;
     ctx->addr_width = addr_width;
+
+    if (strncmp(file, "usb://", strlen("usb://")) != 0) {
+        printf("Using USB port: %s\n", file);
+        use_usb = true;
+        ctx->uart = &serial_backend;
+    } else {
+        ctx->uart = &usb_backend;
+    }
 
     fd = open(file, O_RDWR);
 

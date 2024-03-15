@@ -5,20 +5,6 @@
 #include <errno.h>
 #include "uartbone.h"
 
-void uart_write(struct uartbone_ctx *ctx, uint8_t data) {
-    write(ctx->fd, &data, 1);
-}
-
-int uart_read(struct uartbone_ctx *ctx, uint8_t *res) {
-    return read(ctx->fd, res, 1);
-}
-
-struct uart_backend ub = {
-    .type = UNIX_UART,
-    .readb = uart_read,
-    .writeb = uart_write
-};
-
 int get_reg_addr(FILE *csv, char *reg_name, uint32_t *res) {
     char *line = NULL;
     char *tok;
@@ -102,6 +88,7 @@ int main(int argc, char **argv) {
     char *uart_port = NULL;
     char *csv_file = NULL;
     FILE *csv;
+    bool use_usb = false;
 
     while ((opt = getopt(argc, argv, ":w:r:b:a:v:c:u:Vih")) != -1) {
         switch (opt) {
@@ -160,7 +147,9 @@ int main(int argc, char **argv) {
     }
 
     if (!uart_port) {
-        printf("You must specify an uart port using -u uart_port\n");
+        printf("You must specify an uart or USB port using -u port\n");
+        printf("Syntax: -u /dev/ttyUSBxxx\n");
+        printf("Syntax: -u usb://vid:pid/EP\n");
         print_usage(prog_name);
         return -1;
     }
@@ -168,11 +157,9 @@ int main(int argc, char **argv) {
     uartbone_unix_init(&ctx, uart_port, baudrate, addr_width);
 
     if (!ctx.open) {
-        printf("opening uart failed!\n");
+        printf("opening device %s failed!\n", uart_port);
         return ctx.error;
     }
-
-    ctx.uart = &ub;
 
     if (verbose) {
         if (do_print_ident)
