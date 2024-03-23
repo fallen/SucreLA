@@ -31,6 +31,7 @@ jobs:
           pipenv run python3 ./sucrela.py --build
       - name: Build the software
         run: |
+          sudo apt-get -y install libusb-1.0-0-dev libusb-1.0-0
           cd software/libuartbone
           make
           ./uartbone_cli -h
