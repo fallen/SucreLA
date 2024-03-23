@@ -37,6 +37,10 @@ BOARD_DIR   = $(BSP_DIR)/board
 BOARD_SRCS  = $(BOARD_DIR)/hydrausb3_v1.c
 OBJS     += $(patsubst $(BOARD_DIR)/%.c,$(BUILD_DIR)/%.o,$(BOARD_SRCS))
 
+USB_DIR   = $(BSP_DIR)/usb/usb_devbulk
+USB_SRCS  = $(wildcard $(USB_DIR)/*.c)
+OBJS        += $(patsubst $(USB_DIR)/%.c,$(BUILD_DIR)/%.o,$(USB_SRCS))
+
 USER_DIR  = ./
 USER_SRCS = $(wildcard $(USER_DIR)/*.c)
 OBJS     += $(patsubst $(USER_DIR)/%.c,$(BUILD_DIR)/%.o,$(USER_SRCS))
@@ -60,6 +64,7 @@ INCLUDES = \
   -I"$(RVMSIS_DIR)" \
   -I"$(DRV_DIR)" \
   -I"$(BOARD_DIR)" \
+  -I"$(USB_DIR)" \
   -I"$(USER_DIR)" \
   -I"$(BUILD_DIR)" \
   -I"$(UARTBONE_DIR)"
@@ -118,6 +123,12 @@ $(BUILD_DIR)/%.o: $(DRV_DIR)/%.c | $$(@D)/.
 
 $(BUILD_DIR)/%.o: $(BOARD_DIR)/%.c | $$(@D)/.
 	@echo 'Building file: $<'
+	$(COMPILER_PREFIX)-gcc $(C_OPTS) -c -o "$@" "$<"
+	@echo ' '
+
+$(BUILD_DIR)/%.o: $(USB_DIR)/%.c | $$(@D)/.
+	@echo 'Building file: $<'
+	mkdir -p $(@D)
 	$(COMPILER_PREFIX)-gcc $(C_OPTS) -c -o "$@" "$<"
 	@echo ' '
 
