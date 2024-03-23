@@ -36,9 +36,10 @@
 /* HSPI Data width : 8 bits */
 #define HSPI_DATA_WIDTH 0
 
-#define RX_DMA_Addr0   0x20020000
-#define RX_DMA_LENGTH   4096
-#define RX_DMA_Addr1   RX_DMA_Addr0 + RX_DMA_LENGTH
+#define HSPI_RX_DMA_LENGTH   4096
+
+__attribute__((aligned(16))) uint8_t HSPI_RX_Addr0[HSPI_RX_DMA_LENGTH] __attribute__((section(".DMADATA")));
+__attribute__((aligned(16))) uint8_t HSPI_RX_Addr1[HSPI_RX_DMA_LENGTH] __attribute__((section(".DMADATA")));
 
 /* Shared variables */
 volatile int HSPI_TX_End_Flag; // Send completion flag
@@ -87,8 +88,8 @@ int main(void) {
 	char ident_str[256];
 	int i = 0;
 	char c;
-	uint32_t *dma_rx = (uint32_t *)RX_DMA_Addr0;
-	uint8_t *hspi_rxed_bytes = (uint8_t *)RX_DMA_Addr0;
+	uint32_t *dma_rx = (uint32_t *)HSPI_RX_Addr0;
+	uint8_t *hspi_rxed_bytes = (uint8_t *)HSPI_RX_Addr0;
 
 	bsp_gpio_init();
 	bsp_init(FREQ_SYS);
@@ -118,10 +119,11 @@ int main(void) {
 	printf("FPGA SoC ident: %s\n\r", ident_str);
 
 	printf("Preparing HSPI RX interface...\n\r");
-	memset(dma_rx, '\0', RX_DMA_LENGTH*2);
+	memset(HSPI_RX_Addr0, '\0', HSPI_RX_DMA_LENGTH);
+	memset(HSPI_RX_Addr1, '\0', HSPI_RX_DMA_LENGTH);
 	HSPI_RX_End_Flag = 0;  // Receive completion flag
 	HSPI_RX_End_Err = 0; // 0=No Error else >0 Error code
-	HSPI_DoubleDMA_Init(HSPI_DEVICE, HSPI_DATA_WIDTH, RX_DMA_Addr0, RX_DMA_Addr1, 0);
+	HSPI_DoubleDMA_Init(HSPI_DEVICE, HSPI_DATA_WIDTH, (unsigned long int)HSPI_RX_Addr0, (unsigned long int)HSPI_RX_Addr1, 0);
 
 	printf("Starting a capture...\n\r");
 	uartbone_write(&ctx, CSR_LA_TRIGGER_MEM_MASK_ADDR, 0);
@@ -205,8 +207,8 @@ int main(void) {
 
 void HSPI_IRQHandler_ReInitRX(void)
 {
-	R32_HSPI_RX_ADDR0 = RX_DMA_Addr0;
-	R32_HSPI_RX_ADDR1 = RX_DMA_Addr1;
+	R32_HSPI_RX_ADDR0 = (unsigned long int)HSPI_RX_Addr0;
+	R32_HSPI_RX_ADDR1 = (unsigned long int)HSPI_RX_Addr1;
 }
 
 __attribute__((interrupt("WCH-Interrupt-fast"))) void HSPI_IRQHandler(void)
