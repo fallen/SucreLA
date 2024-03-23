@@ -2,9 +2,15 @@
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h>
+
+#include <libusb.h>
+#if !defined(LIBUSB_API_VERSION) || (LIBUSB_API_VERSION < 0x0100010A)
+#define libusb_init_context(a, b, c) libusb_init(a)
+#endif
 
 #include "uartbone.h"
 
@@ -81,9 +87,73 @@ int uart_read(struct uartbone_ctx *ctx, uint8_t *res, size_t len) {
 }
 
 void usb_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
-}
+    uint8_t *usb_buffer;
+    int ret;
+    int transferred;
+    size_t usb_tx_len = len + 3;
+    int i;
+
+#ifdef DEBUG
+    printf("doing write to endpoint %d of size %zu: \n", ctx->endpoint, len);
+    for (i = 0; i < len; i++)
+        printf("%02x ", data[i]);
+    printf("\n");
+#endif
+
+    usb_buffer = malloc(usb_tx_len);
+    usb_buffer[0] = 'U'; // uartbone code
+    usb_buffer[1] = 'w'; // uart write cmd
+    usb_buffer[2] = len; // uart payload total size
+    memcpy(&usb_buffer[3], data, len);
+
+    ret = libusb_bulk_transfer((libusb_device_handle *)ctx->usb_handle, ctx->endpoint, usb_buffer, usb_tx_len, &transferred, 5000);
+    free(usb_buffer);
+    if (ret)
+        printf("libusb_bulk_transfer error %d: %s\n", ret, libusb_error_name(ret));
+
+    if (transferred != usb_tx_len)
+        printf("error, libusb_bulk_transfer transferred %d instead of %zu\n", transferred, usb_tx_len);
+ }
 
 int usb_read(struct uartbone_ctx *ctx, uint8_t *res, size_t len) {
+    uint8_t usb_buffer[1024];
+    int ret;
+    int transferred;
+    uint8_t tmpbuf[3] = {'U', 'r', len};
+
+#ifdef DEBUG
+    printf("doing read to endpoint %d of size %zu\n", ctx->endpoint, len);
+    printf("sending Read command\n");
+#endif
+
+    ret = libusb_bulk_transfer((libusb_device_handle *)ctx->usb_handle, ctx->endpoint, tmpbuf, sizeof(tmpbuf), &transferred, 5000);
+    if (ret) {
+        printf("libusb_bulk_transfer error %d: %s\n", ret, libusb_error_name(ret));
+        return -1;
+    }
+
+    if (transferred != sizeof(tmpbuf)) {
+        printf("error, libusb_bulk_transfer transferred %d instead of %zu\n", transferred, sizeof(tmpbuf));
+        return -1;
+    }
+
+#ifdef DEBUG
+    printf("Reading EP1 IN buffer\n");
+#endif
+
+    ret = libusb_bulk_transfer((libusb_device_handle *)ctx->usb_handle, ctx->endpoint | LIBUSB_ENDPOINT_IN, usb_buffer, 1024, &transferred, 5000);
+    if (ret) {
+        printf("libusb_bulk_transfer error %d: %s\n", ret, libusb_error_name(ret));
+        return -1;
+    }
+
+    if (transferred != len) {
+        printf("error, libusb_bulk_transfer transferred %d instead of %zu\n", transferred, len);
+        return -1;
+    }
+
+    memcpy(res, usb_buffer, len);
+
     return 0;
 }
 
@@ -99,6 +169,60 @@ struct uart_backend usb_backend = {
     .write = usb_write
 };
 
+/*
+ * parse USB scheme
+ * must be of the form usb://vendor_id:product_id[/endpoint]
+ * vendor_id and product_id can be expressed in hex but must
+ * have a 0x prefix.
+ *
+ * The /endpoint at the end is optional. Of omitted endpoint is
+ * considered to be OUT 0.
+ * return -1 upon parsing error, 0 if SUCCESS
+ */
+int parse_usb_scheme(char *scheme, uint16_t *vid, uint16_t *pid, uint8_t *endpoint) {
+    long res;
+    char *endptr;
+    char *tmp;
+
+    /* minimum size usb device scheme: usb://x:y => 9 */
+    if ((strlen(scheme) < strlen("usb://x:y")) || (strncmp(scheme, "usb://", strlen("usb://")) != 0))
+        return -1;
+
+    scheme += strlen("usb://");
+    errno = 0;
+    res = strtol(scheme, &endptr, 0);
+    if ((errno != 0) || (res > UINT16_MAX) || (scheme == endptr) || (*endptr == '\0'))
+        return -1;
+
+    *vid = res;
+    endptr++; // skip the ':' char
+    tmp = endptr;
+    errno = 0;
+    res = strtol(endptr, &endptr, 0);
+    if ((errno != 0) || (res > UINT16_MAX) || (tmp == endptr))
+        return -1;
+
+    *pid = res;
+    if (*endptr != '/') {
+        *endpoint = 0;
+        return 0;
+    }
+
+    endptr++; // skip the '/' char
+    if (*endptr == '\0') {
+        *endpoint = 0;
+        return 0;
+    }
+    tmp = endptr;
+    errno = 0;
+    res = strtol(endptr, &endptr, 0);
+    if ((errno != 0) || (res > UINT8_MAX) || (tmp == endptr))
+        return -1;
+    *endpoint = res;
+
+    return 0;
+}
+
 void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudrate, unsigned int addr_width) {
     struct termios tty;
     int fd;
@@ -108,14 +232,49 @@ void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudr
     ctx->open = false;
     ctx->addr_width = addr_width;
 
-    if (strncmp(file, "usb://", strlen("usb://")) != 0) {
+    /* minimum size usb device scheme: usb://x:y => 9 */
+    if (!parse_usb_scheme(file, &ctx->vendor_id, &ctx->product_id, &ctx->endpoint)) {
+        int ret;
+        libusb_device_handle *handle;
+
         printf("Using USB port: %s\n", file);
+        printf("vid: %04x pid: %04x endpoint: %02x\n", ctx->vendor_id, ctx->product_id, ctx->endpoint);
         use_usb = true;
-        ctx->uart = &serial_backend;
-    } else {
         ctx->uart = &usb_backend;
+        ret = libusb_init_context(NULL, NULL, 0);
+        if (ret) {
+            ctx->error = ret;
+            printf("libusb_init_context error %d: %s\n", ret, libusb_error_name(ret));
+            return;
+        }
+        handle = libusb_open_device_with_vid_pid(NULL, ctx->vendor_id, ctx->product_id);
+        if (!handle) {
+            ctx->error = -1;
+            printf("libusb_open_device_with_vid_pid error: Device not found!\n");
+            return;
+        }
+        ctx->usb_handle = handle;
+
+        ret = libusb_set_auto_detach_kernel_driver(handle, 1);
+        if (ret) {
+            ctx->error = -1;
+            printf("libusb_set_auto_detach_kernel_driver error %d: %s\n", ret, libusb_error_name(ret));
+            return;
+        }
+        if (libusb_kernel_driver_active(handle, 0) == 1) {
+            printf("Kernel driver active!\n");
+        }
+        ret = libusb_claim_interface(handle, 0);
+        if (ret) {
+            ctx->error = ret;
+            printf("libusb_claim_interface error %d: %s\n", ret, libusb_error_name(ret));
+            return;
+        }
+        ctx->open = true;
+        return;
     }
 
+    ctx->uart = &serial_backend;
     fd = open(file, O_RDWR);
 
     if (fd == -1) {

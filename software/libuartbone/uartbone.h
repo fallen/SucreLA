@@ -1,6 +1,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/*
+ * There can exist only 16 OUT endpoints and 16 IN endpoints
+ * Bit 7 indicates IN vs OUT (1 = IN)
+ * bits 0..3 indicate endpoint number
+ * bits 4..6 should be 0, therefor -1 can be used to signify
+ * "no endpoint"
+ */
+#define UARTBONE_NO_ENDPOINT (-1)
+
 enum uart_backend_type {
     UNIX_UART,
     CH569_UART,
@@ -26,8 +35,13 @@ struct uartbone_ctx {
     uint16_t vendor_id;
     uint16_t product_id;
     unsigned char endpoint;
+    void *usb_handle;
 };
 
 uint32_t uartbone_read(struct uartbone_ctx *ctx, uint64_t addr);
 void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudrate, unsigned int addr_width);
 void uartbone_write(struct uartbone_ctx *ctx, uint64_t addr, uint32_t val);
+
+static inline bool ctx_uses_usb(struct uartbone_ctx *ctx) {
+    return ctx && ctx->uart && ctx->uart->type == UNIX_USB;
+}

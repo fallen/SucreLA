@@ -168,8 +168,9 @@ int main(int argc, char **argv) {
             printf("issuing Read\n");
         if (do_write)
             printf("issuing Write\n");
-        printf("- uart: %s\n", uart_port);
-        printf("- baudrate: %d\n", baudrate);
+        printf("- %s: %s\n", ctx_uses_usb(&ctx) ? "usb" : "uart", uart_port);
+        if (!ctx_uses_usb(&ctx))
+            printf("- baudrate: %d\n", baudrate);
         printf("- address width: %d\n", addr_width);
         if (csv_file)
             printf("- csv: %s\n", csv_file);
