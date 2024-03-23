@@ -73,7 +73,7 @@ int uart_read(struct uartbone_ctx *ctx, uint8_t *res, size_t len) {
         ret = read(ctx->fd, res + cur_pos, len - cur_pos);
         if (ret <= 0) {
             perror("read");
-            return;
+            return ret;
         }
         cur_pos += ret;
     }
