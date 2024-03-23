@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* System clock and HSPI freq : 30 MHz */
-#define FREQ_SYS (30000000)
+/* System clock and HSPI freq : 120 MHz */
+#define FREQ_SYS (120000000)
 
 #include "core_riscv.h"
 #include "CH56x_bsp.h"
