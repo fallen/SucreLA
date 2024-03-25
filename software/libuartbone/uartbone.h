@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /*
  * There can exist only 16 OUT endpoints and 16 IN endpoints
@@ -38,6 +39,7 @@ struct uartbone_ctx {
     void *usb_handle;
 };
 
+int get_reg_addr(FILE *csv, char *reg_name, uint32_t *res);
 uint32_t uartbone_read(struct uartbone_ctx *ctx, uint64_t addr);
 void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudrate, unsigned int addr_width);
 void uartbone_write(struct uartbone_ctx *ctx, uint64_t addr, uint32_t val);

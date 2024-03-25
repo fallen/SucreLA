@@ -14,6 +14,66 @@
 
 #include "uartbone.h"
 
+int get_reg_addr(FILE *csv, char *reg_name, uint32_t *res) {
+    char *line = NULL;
+    char *tok;
+    size_t len = 0;
+    bool csr_base_found = false;
+    bool csr_reg_found = false;
+    uint32_t csr_base = 0;
+    uint32_t reg_addr = 0;
+    ssize_t nread;
+    size_t reg_name_len = strlen(reg_name);
+
+    if (!reg_name)
+        return -1;
+
+    while ((nread = getline(&line, &len, csv)) != -1) {
+
+        // Find the csd_base address
+        if (strncmp(line, "csr_base", strlen("csr_base")) == 0) {
+            strtok(line, ",");
+            tok = strtok(NULL, ",");
+            if (tok && (strncmp(tok, reg_name, reg_name_len) == 0)) {
+                if (tok[reg_name_len] != '\0')
+                    continue;
+
+                tok = strtok(NULL, ",");
+                if (tok) {
+                    csr_base = strtol(tok, NULL, 0);
+                    csr_base_found = true;
+                }
+            }
+        }
+
+        // Find the register address
+        if (strncmp(line, "csr_register", strlen("csr_register")) == 0) {
+            strtok(line, ",");
+            tok = strtok(NULL, ",");
+
+            if (tok && reg_name && (strncmp(tok, reg_name, reg_name_len) == 0)) {
+                if (tok[reg_name_len] != '\0')
+                    continue;
+
+                tok = strtok(NULL, ",");
+                if (tok) {
+                    reg_addr = strtol(tok, NULL, 0);
+                    csr_reg_found = true;
+                }
+            }
+        }
+    }
+
+    if (csr_reg_found)
+        *res = reg_addr;
+    else if (csr_base_found)
+        *res = csr_base;
+    else
+        return -1;
+
+    return 0;
+}
+
 static speed_t baudrate_to_speed(unsigned int baudrate) {
     switch (baudrate) {
     case 9600:
