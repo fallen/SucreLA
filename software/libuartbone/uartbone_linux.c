@@ -292,44 +292,50 @@ void uartbone_unix_init(struct uartbone_ctx *ctx, char *file, unsigned int baudr
     ctx->open = false;
     ctx->addr_width = addr_width;
 
-    /* minimum size usb device scheme: usb://x:y => 9 */
-    if (!parse_usb_scheme(file, &ctx->vendor_id, &ctx->product_id, &ctx->endpoint)) {
+    if (!strncmp(file, "usb://", 6)) {
         int ret;
         libusb_device_handle *handle;
 
-        printf("Using USB port: %s\n", file);
-        printf("vid: %04x pid: %04x endpoint: %02x\n", ctx->vendor_id, ctx->product_id, ctx->endpoint);
+        if ((strlen(file) != strlen("usb://")) || !ctx->usb_handle) {
+            ret = parse_usb_scheme(file, &ctx->vendor_id, &ctx->product_id, &ctx->endpoint);
+            if (ret)
+                return;
+            printf("Using USB port: %s\n", file);
+            printf("vid: %04x pid: %04x endpoint: %02x\n", ctx->vendor_id, ctx->product_id, ctx->endpoint);
+            ret = libusb_init_context(NULL, NULL, 0);
+            if (ret) {
+                ctx->error = ret;
+                printf("libusb_init_context error %d: %s\n", ret, libusb_error_name(ret));
+                return;
+            }
+
+            handle = libusb_open_device_with_vid_pid(NULL, ctx->vendor_id, ctx->product_id);
+            if (!handle) {
+                ctx->error = -1;
+                printf("libusb_open_device_with_vid_pid error: Device not found!\n");
+                return;
+            }
+            ctx->usb_handle = handle;
+
+            ret = libusb_set_auto_detach_kernel_driver(handle, 1);
+            if (ret) {
+                ctx->error = -1;
+                printf("libusb_set_auto_detach_kernel_driver error %d: %s\n", ret, libusb_error_name(ret));
+                return;
+            }
+            if (libusb_kernel_driver_active(handle, 0) == 1) {
+                printf("Kernel driver active!\n");
+            }
+            ret = libusb_claim_interface(handle, 0);
+            if (ret) {
+                ctx->error = ret;
+                printf("libusb_claim_interface error %d: %s\n", ret, libusb_error_name(ret));
+                return;
+            }
+        }
+
         use_usb = true;
         ctx->uart = &usb_backend;
-        ret = libusb_init_context(NULL, NULL, 0);
-        if (ret) {
-            ctx->error = ret;
-            printf("libusb_init_context error %d: %s\n", ret, libusb_error_name(ret));
-            return;
-        }
-        handle = libusb_open_device_with_vid_pid(NULL, ctx->vendor_id, ctx->product_id);
-        if (!handle) {
-            ctx->error = -1;
-            printf("libusb_open_device_with_vid_pid error: Device not found!\n");
-            return;
-        }
-        ctx->usb_handle = handle;
-
-        ret = libusb_set_auto_detach_kernel_driver(handle, 1);
-        if (ret) {
-            ctx->error = -1;
-            printf("libusb_set_auto_detach_kernel_driver error %d: %s\n", ret, libusb_error_name(ret));
-            return;
-        }
-        if (libusb_kernel_driver_active(handle, 0) == 1) {
-            printf("Kernel driver active!\n");
-        }
-        ret = libusb_claim_interface(handle, 0);
-        if (ret) {
-            ctx->error = ret;
-            printf("libusb_claim_interface error %d: %s\n", ret, libusb_error_name(ret));
-            return;
-        }
         ctx->open = true;
         return;
     }
