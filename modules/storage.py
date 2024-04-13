@@ -14,6 +14,7 @@ class Storage(Module, AutoCSR):
 
         self.enable    = CSRStorage()
         self.done      = CSRStatus()
+        self.fsm_state_r = CSRStatus()
 
         self.length    = CSRStorage(bits_for(depth))
         self.offset    = CSRStorage(bits_for(depth))
@@ -54,10 +55,11 @@ class Storage(Module, AutoCSR):
         self.submodules += mem_flush
 
         self.fsm_state = Signal(max=3)
+        self.specials += MultiReg(self.fsm_state, self.fsm_state_r.status)
 
         # FSM
         fsm = FSM(reset_state="IDLE")
-        fsm = ClockDomainsRenamer("scope")(fsm)
+        self.fsm = fsm = ClockDomainsRenamer("scope")(fsm)
         self.submodules += fsm
         fsm.act("IDLE",
             self.fsm_state.eq(0),
