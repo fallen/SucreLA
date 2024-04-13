@@ -55,7 +55,7 @@ UARTBONE_DIR  = ../../libuartbone
 UARTBONE_SRCS = $(UARTBONE_DIR)/uartbone.c
 OBJS         += $(patsubst $(UARTBONE_DIR)/%.c,$(BUILD_DIR)/%.o,$(UARTBONE_SRCS))
 
-BASE_OPTS = $(MARCH_OPT) -mabi=ilp32 -msmall-data-limit=8 $(OPTIM_OPTS) -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections
+BASE_OPTS = $(MARCH_OPT) -mabi=ilp32 -msmall-data-limit=8 $(OPTIM_OPTS) -Wno-discarded-qualifiers -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections
 C_OPTS    = $(BASE_OPTS) $(DEBUG) $(DEFINE_OPTS)\
               $(INCLUDES) -std=gnu99 -MMD -MP -MT"$(@)"
 LD_OPTS   = -T "$(BSP_DIR)/ld/.ld" -nostartfiles -Xlinker --gc-sections -Xlinker --print-memory-usage -Wl,-Map,"$(PROJECT).map" --specs=nano.specs --specs=nosys.specs
