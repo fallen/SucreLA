@@ -5,7 +5,6 @@
 #include "CH56x_uart.h"
 
 static void ch56x_uart_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len) {
-	//printf("sending byte 0x%02x to uart %d\n\r", data, ctx->fd);
 	switch (ctx->fd) {
 		case 0: {
 			UART0_SendString(data, len);
@@ -24,7 +23,7 @@ static void ch56x_uart_write(struct uartbone_ctx *ctx, uint8_t *data, size_t len
 			break;
 		}
 		default: {
-			printf("Only valid UARTs are 0/1/2/3\n");
+			printf("Only valid UARTs are 0/1/2/3\n\r");
 			abort();
 		}
 	}
@@ -49,11 +48,10 @@ static int ch56x_uart_read(struct uartbone_ctx *ctx, uint8_t *data, size_t len) 
 			break;
 		}
 		default: {
-			printf("Only valid UARTs are 0/1/2/3\n");
+			printf("Only valid UARTs are 0/1/2/3\n\r");
 			abort();
 		}
 	}
-	//printf("receiving byte 0x%02x from uart %d\n\r", *data, ctx->fd);
 	return 0;
 }
 
