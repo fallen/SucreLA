@@ -46,4 +46,13 @@ jobs:
           sudo tar -C /opt -xzf $PWD/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
       - name: Build SucreLA HydraUSB3 RISC-V firmware
         run: PATH=/opt/xpack-riscv-none-elf-gcc-13.2.0-2/bin:$PATH make -C software/boards/hydrausb3/
-
+      - name: Build libsigrok with SucréLA support
+        run: |
+          sudo apt-get -y install git-core gcc g++ make autoconf autoconf-archive \
+          automake libtool pkg-config libglib2.0-dev libglibmm-2.4-dev libzip-dev \
+          libusb-1.0-0-dev check doxygen
+          cd software/host/libsigrok
+          ./autogen.sh
+          ./configure --enable-all-drivers=no --enable-sucrela
+          make -j5
+          sudo make install
