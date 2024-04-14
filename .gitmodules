@@ -1,3 +1,6 @@
 [submodule "wch-ch56x-bsp"]
 	path = wch-ch56x-bsp
 	url = git@github.com:fallen/wch-ch56x-bsp.git
+[submodule "software/host/libsigrok"]
+	path = software/host/libsigrok
+	url = https://github.com/fallen/libsigrok
