@@ -1,0 +1,206 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "7dca55fc-548f-4319-89ea-8fc153556669")
+	(paper "A4")
+	(title_block
+		(title "HydraSucréLA")
+	)
+	(lib_symbols)
+	(sheet
+		(at 109.22 59.69)
+		(size 34.29 16.51)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "35f69618-c33d-4c2a-84d3-2df7e5c852ee")
+		(property "Sheetname" "Power"
+			(at 109.22 58.9784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 109.22 76.7846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "hydrasucrela"
+				(path "/7dca55fc-548f-4319-89ea-8fc153556669"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 135.89 35.56)
+		(size 17.78 12.7)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "3efad1f9-d91e-43ba-9140-18fbabffb89b")
+		(property "Sheetname" "FPGA_2"
+			(at 135.89 34.8484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "FPGA_2.kicad_sch"
+			(at 135.89 48.8446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "hydrasucrela"
+				(path "/7dca55fc-548f-4319-89ea-8fc153556669"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 162.56 35.56)
+		(size 17.78 12.7)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "76f71ab5-50fa-4de0-b0e9-cddae93b7c4d")
+		(property "Sheetname" "FPGA_3"
+			(at 162.56 34.8484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "FPGA_3.kicad_sch"
+			(at 162.56 48.8446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "hydrasucrela"
+				(path "/7dca55fc-548f-4319-89ea-8fc153556669"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 109.22 35.56)
+		(size 17.78 12.7)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "8d633133-e01e-44bf-a172-d61682af3a02")
+		(property "Sheetname" "FPGA_1"
+			(at 109.22 34.8484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "FPGA_1.kicad_sch"
+			(at 109.22 48.8446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "hydrasucrela"
+				(path "/7dca55fc-548f-4319-89ea-8fc153556669"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 151.13 59.69)
+		(size 34.29 16.51)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "dfe3b8f8-0591-4675-8a5e-9c3bb6092797")
+		(property "Sheetname" "IO"
+			(at 151.13 58.9784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "IO.kicad_sch"
+			(at 151.13 76.7846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "hydrasucrela"
+				(path "/7dca55fc-548f-4319-89ea-8fc153556669"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Lattice_ECP5_FPGA")(type "Legacy")(uri "/home/ysionneau/dev/KiCad-Schematic-Symbol-Libraries/Lattice_ECP5_FPGA.lib")(options "")(descr ""))
+)
