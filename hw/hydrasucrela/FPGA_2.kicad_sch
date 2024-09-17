@@ -8570,7 +8570,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_BGA:Lattice_caBGA-381_17.0x17.0mm_Layout20x20_P0.8mm_Ball0.4mm_Pad0.4mm_NSMD"
 			(at 125.73 64.77 0)
 			(effects
 				(font
@@ -9762,7 +9762,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3e269e58-8a46-49c8-a833-000c79e7323b")
-		(property "Reference" "U2"
+		(property "Reference" "U1"
 			(at 80.01 97.7899 0)
 			(effects
 				(font
@@ -10956,7 +10956,7 @@
 		(instances
 			(project "hydrasucrela"
 				(path "/7dca55fc-548f-4319-89ea-8fc153556669/3efad1f9-d91e-43ba-9140-18fbabffb89b"
-					(reference "U2")
+					(reference "U1")
 					(unit 4)
 				)
 			)
@@ -10972,7 +10972,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8d936cc9-e005-40e1-9e03-adbadfed13d1")
-		(property "Reference" "U2"
+		(property "Reference" "U1"
 			(at 259.08 96.5199 0)
 			(effects
 				(font
@@ -12166,7 +12166,7 @@
 		(instances
 			(project "hydrasucrela"
 				(path "/7dca55fc-548f-4319-89ea-8fc153556669/3efad1f9-d91e-43ba-9140-18fbabffb89b"
-					(reference "U2")
+					(reference "U1")
 					(unit 6)
 				)
 			)

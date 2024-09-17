@@ -4105,7 +4105,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Harwin:Harwin_M20-7810545_2x05_P2.54mm_Vertical"
 			(at 177.8 67.31 0)
 			(effects
 				(font
@@ -4329,7 +4329,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Harwin:Harwin_M20-7810545_2x05_P2.54mm_Vertical"
 			(at 237.49 67.31 0)
 			(effects
 				(font
@@ -4618,7 +4618,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Harwin:Harwin_M20-7812045_2x20_P2.54mm_Vertical"
 			(at 115.57 85.09 0)
 			(effects
 				(font
@@ -4934,7 +4934,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical"
 			(at 238.76 107.95 0)
 			(effects
 				(font
