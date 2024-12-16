@@ -234,7 +234,7 @@
 				)
 			)
 		)
-		(symbol "Connector_Generic:Conn_02x05_Top_Bottom"
+		(symbol "Connector_Generic:Conn_02x05_Odd_Even"
 			(pin_names
 				(offset 1.016) hide)
 			(exclude_from_sim no)
@@ -248,7 +248,7 @@
 					)
 				)
 			)
-			(property "Value" "Conn_02x05_Top_Bottom"
+			(property "Value" "Conn_02x05_Odd_Even"
 				(at 1.27 -7.62 0)
 				(effects
 					(font
@@ -274,7 +274,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, double row, 02x05, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -301,7 +301,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_02x05_Top_Bottom_1_1"
+			(symbol "Conn_02x05_Odd_Even_1_1"
 				(rectangle
 					(start -1.27 -4.953)
 					(end 0 -5.207)
@@ -460,7 +460,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 2.54 0)
+					(at 7.62 5.08 180)
 					(length 3.81)
 					(name "Pin_2"
 						(effects
@@ -478,7 +478,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at -5.08 2.54 0)
 					(length 3.81)
 					(name "Pin_3"
 						(effects
@@ -496,7 +496,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -2.54 0)
+					(at 7.62 2.54 180)
 					(length 3.81)
 					(name "Pin_4"
 						(effects
@@ -514,7 +514,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -5.08 0)
+					(at -5.08 0 0)
 					(length 3.81)
 					(name "Pin_5"
 						(effects
@@ -532,7 +532,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 5.08 180)
+					(at 7.62 0 180)
 					(length 3.81)
 					(name "Pin_6"
 						(effects
@@ -550,7 +550,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 2.54 180)
+					(at -5.08 -2.54 0)
 					(length 3.81)
 					(name "Pin_7"
 						(effects
@@ -568,7 +568,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 0 180)
+					(at 7.62 -2.54 180)
 					(length 3.81)
 					(name "Pin_8"
 						(effects
@@ -586,7 +586,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -2.54 180)
+					(at -5.08 -5.08 0)
 					(length 3.81)
 					(name "Pin_9"
 						(effects
@@ -1846,7 +1846,7 @@
 				)
 			)
 		)
-		(symbol "Connector_Generic:Conn_02x20_Top_Bottom"
+		(symbol "Connector_Generic:Conn_02x20_Odd_Even"
 			(pin_names
 				(offset 1.016) hide)
 			(exclude_from_sim no)
@@ -1860,7 +1860,7 @@
 					)
 				)
 			)
-			(property "Value" "Conn_02x20_Top_Bottom"
+			(property "Value" "Conn_02x20_Odd_Even"
 				(at 1.27 -27.94 0)
 				(effects
 					(font
@@ -1886,7 +1886,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, double row, 02x20, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connector, double row, 02x20, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1913,7 +1913,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_02x20_Top_Bottom_1_1"
+			(symbol "Conn_02x20_Odd_Even_1_1"
 				(rectangle
 					(start -1.27 -25.273)
 					(end 0 -25.527)
@@ -2384,7 +2384,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at 7.62 12.7 180)
 					(length 3.81)
 					(name "Pin_10"
 						(effects
@@ -2402,7 +2402,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -2.54 0)
+					(at -5.08 10.16 0)
 					(length 3.81)
 					(name "Pin_11"
 						(effects
@@ -2420,7 +2420,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -5.08 0)
+					(at 7.62 10.16 180)
 					(length 3.81)
 					(name "Pin_12"
 						(effects
@@ -2438,7 +2438,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -7.62 0)
+					(at -5.08 7.62 0)
 					(length 3.81)
 					(name "Pin_13"
 						(effects
@@ -2456,7 +2456,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -10.16 0)
+					(at 7.62 7.62 180)
 					(length 3.81)
 					(name "Pin_14"
 						(effects
@@ -2474,7 +2474,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -12.7 0)
+					(at -5.08 5.08 0)
 					(length 3.81)
 					(name "Pin_15"
 						(effects
@@ -2492,7 +2492,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -15.24 0)
+					(at 7.62 5.08 180)
 					(length 3.81)
 					(name "Pin_16"
 						(effects
@@ -2510,7 +2510,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -17.78 0)
+					(at -5.08 2.54 0)
 					(length 3.81)
 					(name "Pin_17"
 						(effects
@@ -2528,7 +2528,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -20.32 0)
+					(at 7.62 2.54 180)
 					(length 3.81)
 					(name "Pin_18"
 						(effects
@@ -2546,7 +2546,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -22.86 0)
+					(at -5.08 0 0)
 					(length 3.81)
 					(name "Pin_19"
 						(effects
@@ -2564,7 +2564,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 20.32 0)
+					(at 7.62 22.86 180)
 					(length 3.81)
 					(name "Pin_2"
 						(effects
@@ -2582,7 +2582,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -25.4 0)
+					(at 7.62 0 180)
 					(length 3.81)
 					(name "Pin_20"
 						(effects
@@ -2600,7 +2600,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 22.86 180)
+					(at -5.08 -2.54 0)
 					(length 3.81)
 					(name "Pin_21"
 						(effects
@@ -2618,7 +2618,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 20.32 180)
+					(at 7.62 -2.54 180)
 					(length 3.81)
 					(name "Pin_22"
 						(effects
@@ -2636,7 +2636,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 17.78 180)
+					(at -5.08 -5.08 0)
 					(length 3.81)
 					(name "Pin_23"
 						(effects
@@ -2654,7 +2654,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 15.24 180)
+					(at 7.62 -5.08 180)
 					(length 3.81)
 					(name "Pin_24"
 						(effects
@@ -2672,7 +2672,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 12.7 180)
+					(at -5.08 -7.62 0)
 					(length 3.81)
 					(name "Pin_25"
 						(effects
@@ -2690,7 +2690,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 10.16 180)
+					(at 7.62 -7.62 180)
 					(length 3.81)
 					(name "Pin_26"
 						(effects
@@ -2708,7 +2708,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 7.62 180)
+					(at -5.08 -10.16 0)
 					(length 3.81)
 					(name "Pin_27"
 						(effects
@@ -2726,7 +2726,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 5.08 180)
+					(at 7.62 -10.16 180)
 					(length 3.81)
 					(name "Pin_28"
 						(effects
@@ -2744,7 +2744,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 2.54 180)
+					(at -5.08 -12.7 0)
 					(length 3.81)
 					(name "Pin_29"
 						(effects
@@ -2762,7 +2762,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 17.78 0)
+					(at -5.08 20.32 0)
 					(length 3.81)
 					(name "Pin_3"
 						(effects
@@ -2780,7 +2780,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 0 180)
+					(at 7.62 -12.7 180)
 					(length 3.81)
 					(name "Pin_30"
 						(effects
@@ -2798,7 +2798,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -2.54 180)
+					(at -5.08 -15.24 0)
 					(length 3.81)
 					(name "Pin_31"
 						(effects
@@ -2816,7 +2816,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -5.08 180)
+					(at 7.62 -15.24 180)
 					(length 3.81)
 					(name "Pin_32"
 						(effects
@@ -2834,7 +2834,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -7.62 180)
+					(at -5.08 -17.78 0)
 					(length 3.81)
 					(name "Pin_33"
 						(effects
@@ -2852,7 +2852,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -10.16 180)
+					(at 7.62 -17.78 180)
 					(length 3.81)
 					(name "Pin_34"
 						(effects
@@ -2870,7 +2870,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -12.7 180)
+					(at -5.08 -20.32 0)
 					(length 3.81)
 					(name "Pin_35"
 						(effects
@@ -2888,7 +2888,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -15.24 180)
+					(at 7.62 -20.32 180)
 					(length 3.81)
 					(name "Pin_36"
 						(effects
@@ -2906,7 +2906,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -17.78 180)
+					(at -5.08 -22.86 0)
 					(length 3.81)
 					(name "Pin_37"
 						(effects
@@ -2924,7 +2924,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -20.32 180)
+					(at 7.62 -22.86 180)
 					(length 3.81)
 					(name "Pin_38"
 						(effects
@@ -2942,7 +2942,7 @@
 					)
 				)
 				(pin passive line
-					(at 7.62 -22.86 180)
+					(at -5.08 -25.4 0)
 					(length 3.81)
 					(name "Pin_39"
 						(effects
@@ -2960,7 +2960,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 15.24 0)
+					(at 7.62 20.32 180)
 					(length 3.81)
 					(name "Pin_4"
 						(effects
@@ -2996,7 +2996,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 12.7 0)
+					(at -5.08 17.78 0)
 					(length 3.81)
 					(name "Pin_5"
 						(effects
@@ -3014,7 +3014,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 10.16 0)
+					(at 7.62 17.78 180)
 					(length 3.81)
 					(name "Pin_6"
 						(effects
@@ -3032,7 +3032,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 7.62 0)
+					(at -5.08 15.24 0)
 					(length 3.81)
 					(name "Pin_7"
 						(effects
@@ -3050,7 +3050,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 5.08 0)
+					(at 7.62 15.24 180)
 					(length 3.81)
 					(name "Pin_8"
 						(effects
@@ -3068,7 +3068,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 2.54 0)
+					(at -5.08 12.7 0)
 					(length 3.81)
 					(name "Pin_9"
 						(effects
@@ -5881,7 +5881,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x05_Top_Bottom")
+		(lib_id "Connector_Generic:Conn_02x05_Odd_Even")
 		(at 177.8 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5898,7 +5898,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_02x05_Odd_Even"
+		(property "Value" "Megastar ZX-PZ2.54-2-5PZZ"
 			(at 179.07 58.42 0)
 			(effects
 				(font
@@ -5906,7 +5906,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Harwin:Harwin_M20-7810545_2x05_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical"
 			(at 177.8 67.31 0)
 			(effects
 				(font
@@ -5915,7 +5915,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2311221544_Megastar-ZX-PZ2-54-2-5PZZ_C7501276.pdf"
 			(at 177.8 67.31 0)
 			(effects
 				(font
@@ -5924,7 +5924,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x05, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 177.8 67.31 0)
 			(effects
 				(font
@@ -6683,7 +6683,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x05_Top_Bottom")
+		(lib_id "Connector_Generic:Conn_02x05_Odd_Even")
 		(at 237.49 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -6700,7 +6700,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_02x05_Odd_Even"
+		(property "Value" "Megastar ZX-PZ2.54-2-5PZZ"
 			(at 238.76 58.42 0)
 			(effects
 				(font
@@ -6708,7 +6708,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Harwin:Harwin_M20-7810545_2x05_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical"
 			(at 237.49 67.31 0)
 			(effects
 				(font
@@ -6726,7 +6726,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x05, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 237.49 67.31 0)
 			(effects
 				(font
@@ -7368,7 +7368,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Generic:Conn_02x20_Top_Bottom")
+		(lib_id "Connector_Generic:Conn_02x20_Odd_Even")
 		(at 115.57 85.09 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7385,7 +7385,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_02x20_Odd_Even"
+		(property "Value" "Yxcon P125-1220A0BS116A1"
 			(at 116.84 58.42 0)
 			(effects
 				(font
@@ -7393,7 +7393,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_Harwin:Harwin_M20-7812045_2x20_P2.54mm_Vertical"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical"
 			(at 115.57 85.09 0)
 			(effects
 				(font
@@ -7402,7 +7402,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2403231322_Yxcon-P125-1220A0BS116A1_C19190512.pdf"
 			(at 115.57 85.09 0)
 			(effects
 				(font
@@ -7411,7 +7411,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x20, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "Generic connector, double row, 02x20, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
 			(at 115.57 85.09 0)
 			(effects
 				(font
@@ -8030,7 +8030,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x05"
+		(property "Value" "Hanbo Electronic HB-PH3-25415PB2GOP"
 			(at 241.3 109.2199 0)
 			(effects
 				(font
@@ -8048,7 +8048,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2312301326_Hanbo-Electronic-HB-PH3-25415PB2GOP_C6332198.pdf"
 			(at 238.76 107.95 0)
 			(effects
 				(font
