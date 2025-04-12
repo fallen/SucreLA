@@ -1,4 +1,8 @@
-# SucréLA
+# SucréLA (READ ONLY, MOVED TO GITLAB)
+
+This is an archived, out-of-date and read-only copy of the SucréLA project.
+
+The project is now hosted on **GitLab** => [https://gitlab.com/yannsionneau/SucreLA](https://gitlab.com/yannsionneau/SucreLA)
 
 ## Building
 
